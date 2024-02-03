@@ -1,41 +1,55 @@
-function realizarOperaciones() {
-    const numero1 = parseFloat(document.getElementById('numero1').value);
-    const numero2 = parseFloat(document.getElementById('numero2').value);
-    
-    if (isNaN(numero1) || isNaN(numero2)) {
-        alert("Por favor, ingresa números válidos.");
-        return;
-    }
+let imcs = [];
 
-    const numOperaciones = parseInt(prompt("¿Cuántas operaciones deseas realizar?"));
+    function calcularIMC() {
+        const alturaInput = document.getElementById('altura');
+        const pesoInput = document.getElementById('peso');
+        const resultadoDiv = document.getElementById('resultado');
 
-    if (isNaN(numOperaciones) || numOperaciones <= 0) {
-        alert("Por favor, ingresa un número válido de operaciones.");
-        return;
-    }
+        const altura = parseFloat(alturaInput.value);
+        const peso = parseFloat(pesoInput.value);
 
-    for (let i = 0; i < numOperaciones; i++) {
-        const operacion = prompt("Selecciona una operación: suma (+), resta (-), multiplicación (x), división (/)");
-
-        switch (operacion) {
-            case "+":
-                alert(`El resultado de la suma es: ${numero1 + numero2}`);
-                break;
-            case "-":
-                alert(`El resultado de la resta es: ${numero1 - numero2}`);
-                break;
-            case "x":
-                alert(`El resultado de la multiplicación es: ${numero1 * numero2}`);
-                break;
-            case "/":
-                if (numero2 === 0) {
-                    alert("No puedes dividir por cero.");
-                } else {
-                    alert(`El resultado de la división es: ${numero1 / numero2}`);
-                }
-                break;
-            default:
-                alert("Operación no válida.");
+        if (isNaN(altura) || isNaN(peso)) {
+            resultadoDiv.innerHTML = '<p>Por favor, ingrese valores numéricos válidos.</p>';
+            return;
         }
+
+        const imc = peso / ((altura / 100) ** 2);
+        imcs.push(imc);
+
+        mostrarResultado(imc);
+        actualizarPromedioIMCs();
     }
-}
+
+    function mostrarResultado(imc) {
+        const resultadoDiv = document.getElementById('resultado');
+        let mensaje = `<p>Su IMC es: ${imc.toFixed(2)}</p>`;
+
+        if (imc < 18.5) {
+            mensaje += '<p>Tiene bajo peso.</p>';
+        } else if (imc < 25) {
+            mensaje += '<p>Tiene un peso normal.</p>';
+        } else if (imc < 30) {
+            mensaje += '<p>Tiene sobrepeso.</p>';
+        } else {
+            mensaje += '<p>Tiene obesidad.</p>';
+        }
+
+        resultadoDiv.innerHTML = mensaje;
+    }
+
+    function actualizarPromedioIMCs() {
+        const promedioDiv = document.createElement('div');
+        promedioDiv.id = 'promedio';
+        const promedio = calcularPromedio(imcs);
+        promedioDiv.innerHTML = `<p>Promedio de IMC: ${promedio.toFixed(2)}</p>`;
+
+        const formulario = document.getElementById('formulario');
+        formulario.appendChild(promedioDiv);
+    }
+
+    function calcularPromedio(array) {
+        if (array.length === 0) return 0;
+
+        const suma = array.reduce((total, imc) => total + imc, 0);
+        return suma / array.length;
+    }

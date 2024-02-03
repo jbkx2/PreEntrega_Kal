@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Document</title>
 </head>
-<body>   
-    <h1>Calculadora Simple</h1>
 
     <script src="calculos.js" ></script>
 
-    <p>Introduce dos números y selecciona una operación:</p>
-    
-    <input type="number" id="numero1" placeholder="Número 1">
-    <input type="number" id="numero2" placeholder="Número 2">
+    <h1>Calculadora de IMC</h1>
 
-    <button onclick="realizarOperaciones()">Realizar Operaciones</button>
+    <form id="formulario">
+        <label for="altura">Altura (en centímetros):</label>
+        <input type="number" id="altura" required>
+        <br>
+        <label for="peso">Peso (en kilogramos):</label>
+        <input type="number" id="peso" required>
+        <br>
+        <button type="button" onclick="calcularIMC()">Calcular IMC</button>
+    </form>
 
+    <div id="resultado"></div>
     
+
+
+
 </body>
 </html>
